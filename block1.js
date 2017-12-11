@@ -2,7 +2,9 @@
  * Created by Admin on 30/10/2017.
  */
 Qualtrics.SurveyEngine.addOnload(function () {
+});
 
+Qualtrics.SurveyEngine.addOnReady(function () {
     var that = this;
 
     function hideEl(element) {
@@ -13,11 +15,33 @@ Qualtrics.SurveyEngine.addOnload(function () {
 
     this.disableNextButton();
 
+    var setColumnToCheck = function(percent) {
+        var finalCheckedColumn = -6; // -6 so that no column can be checked
+        if (percent > 83.33) {
+            finalCheckedColumn = 0;
+        } else if (percent > 50) {
+            finalCheckedColumn = 1;
+        } else if (percent > 16.67) {
+            finalCheckedColumn = 2;
+        } else if (percent >= 0) {
+            finalCheckedColumn = 3;
+        }
+
+        jq('.ChoiceRow:nth-last-child(2) td:eq(' + finalCheckedColumn + ')')
+            .find('input').prop('checked', true).end()
+            .find('label').addClass('q-checked');
+    };
+
     jq('.ChoiceRow:last').find('td').hide();
     jq('.ChoiceRow:nth-last-child(2)')
         .css('background-color', 'yellow')
         .find('input:radio').prop('disabled', true).end()
         .find('td:last').hide();
+
+    var stage1Percent = "${e://Field/stage1}";
+    if(stage1Percent != ''){
+        setColumnToCheck(stage1Percent);
+    }
 
     this.questionclick = function (event, element) {
         // -2 to neglect standard rating and comments
@@ -25,6 +49,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
         var selectedAnswers = this.getSelectedAnswers();
         var answeredQs = 0;
         var countNA = 0;
+
+        console.log(selectedAnswers);
 
         for (var i in selectedAnswers) {
             if (i == 5) {
@@ -35,12 +61,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
             answeredQs += selectedAnswers[i];
         }
 
-        if (answeredQs == totalQs) {
+        if (answeredQs >= totalQs) {
 
             var totalMarks = totalQs * 300;
             var marksObtained = 0;
             var percent = 0;
-            var finalCheckedColumn = -6; // -6 so that no column can be checked
 
             for (var i in selectedAnswers) {
                 if (i == 5) {
@@ -61,24 +86,12 @@ Qualtrics.SurveyEngine.addOnload(function () {
                 .find('input').prop('checked', false).end()
                 .find('label').removeClass('q-checked').end();
 
-            if (percent > 83.33) {
-                finalCheckedColumn = 0;
-            } else if (percent > 50) {
-                finalCheckedColumn = 1;
-            } else if (percent > 16.67) {
-                finalCheckedColumn = 2;
-            } else if (percent >= 0 && totalQs != 0) {
-                finalCheckedColumn = 3;
-            }
+            setColumnToCheck(percent);
 
             // omit this section from calculation
-            if(countNA == totalQs) {
+            if(totalQs == 0) {
                 percent = -1;
             }
-
-            jq('.ChoiceRow:nth-last-child(2) td:eq(' + finalCheckedColumn + ')')
-                .find('input').prop('checked', true).end()
-                .find('label').addClass('q-checked');
 
             that.enableNextButton();
 
@@ -88,12 +101,5 @@ Qualtrics.SurveyEngine.addOnload(function () {
 
 });
 
-Qualtrics.SurveyEngine.addOnReady(function () {
-    /*Place your JavaScript here to run when the page is fully displayed*/
-
-});
-
 Qualtrics.SurveyEngine.addOnUnload(function () {
-    /*Place your JavaScript here to run when the page is unloaded*/
-
 });
