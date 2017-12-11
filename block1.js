@@ -50,8 +50,6 @@ Qualtrics.SurveyEngine.addOnReady(function () {
         var answeredQs = 0;
         var countNA = 0;
 
-        console.log(selectedAnswers);
-
         for (var i in selectedAnswers) {
             if (i == 5) {
                 totalQs -= selectedAnswers[i];
@@ -102,4 +100,7 @@ Qualtrics.SurveyEngine.addOnReady(function () {
 });
 
 Qualtrics.SurveyEngine.addOnUnload(function () {
+
+    Qualtrics.SurveyEngine.setEmbeddedData('stage1Comment', jq('textarea').val());
+
 });
