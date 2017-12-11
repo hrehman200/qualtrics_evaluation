@@ -48,12 +48,10 @@ Qualtrics.SurveyEngine.addOnReady(function () {
         var totalQs = this.getChoices().length - 2;
         var selectedAnswers = this.getSelectedAnswers();
         var answeredQs = 0;
-        var countNA = 0;
 
         for (var i in selectedAnswers) {
             if (i == 5) {
                 totalQs -= selectedAnswers[i];
-                countNA = selectedAnswers[i];
                 continue;
             }
             answeredQs += selectedAnswers[i];
