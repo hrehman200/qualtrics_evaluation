@@ -1,0 +1,9 @@
+@media print {
+    .no-print, .no-print * {
+        display: none !important;
+    }
+
+    label.q-checked {
+        -webkit-print-color-adjust: exact;
+    }
+}

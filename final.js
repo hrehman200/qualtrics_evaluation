@@ -82,6 +82,39 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     jq('<tr style="background-color:#28ABE2; color:white;"><td style="text-align:left; padding:5px;">PART II. VALUES</td><td style= padding:5px;">HE</td><td style= padding:5px;>E</td><td style= padding:5px;>D</td><td style= padding:5px;>I</td></tr>').insertBefore('.ChoiceRow:eq(5)')
     jq('<tr style="background-color:#28ABE2; color:white;"><td style="text-align:left; padding:5px;">Part III. ANNUAL SUPERINTENDENT OBJECTIVES</td><td style= padding:5px;">HE</td><td style= padding:5px;>E</td><td style= padding:5px;>D</td><td style= padding:5px;>I</td></tr>').insertBefore('.ChoiceRow:eq(6)');
 
+    var commentHtmlTemplate = '<tr> \
+        <td colspan="5" style="text-align: left; padding:5px;"></td>\
+    </tr>';
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage1Comment}").end()
+        .insertAfter('.ChoiceRow:eq(0)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage2Comment}").end()
+        .insertAfter('.ChoiceRow:eq(1)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage3Comment}").end()
+        .insertAfter('.ChoiceRow:eq(2)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage4Comment}").end()
+        .insertAfter('.ChoiceRow:eq(3)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage5Comment}").end()
+        .insertAfter('.ChoiceRow:eq(4)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage6Comment}").end()
+        .insertAfter('.ChoiceRow:eq(5)');
+
+    jq(commentHtmlTemplate).clone()
+        .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage7Comment}").end()
+        .insertAfter('.ChoiceRow:eq(6)');
+
+    jq('#Buttons').prepend('<a href="javascript:window.print();" class="no-print" style="margin-right: 10px;">Print</a>');
 
     that.enableNextButton();
 
