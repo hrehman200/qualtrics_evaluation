@@ -27,6 +27,10 @@ Qualtrics.SurveyEngine.addOnReady(function () {
 
     var getColumnToCheck = function (percent) {
         var finalCheckedColumn = -6;
+        if(percent == '') {
+            return finalCheckedColumn;
+        }
+
         if (percent > 83.33) {
             finalCheckedColumn = 0;
         } else if (percent > 50) {

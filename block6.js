@@ -12,11 +12,8 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     }
 
     //hideEl.defer('NextButton');
-    //this.disableNextButton();
 
-    jq('textarea').on('keyup', function (e) {
-        Qualtrics.SurveyEngine.setEmbeddedData('stage1Comment', jq('textarea').val());
-    });
+    //this.disableNextButton();
 
     var setColumnToCheck = function(percent) {
         var finalCheckedColumn = -6; // -6 so that no column can be checked
@@ -38,16 +35,14 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     jq('.ChoiceRow:last').find('td').hide();
     jq('.ChoiceRow:nth-last-child(2)')
         .css('background-color', 'yellow')
-        .find('input:radio').prop('disabled', true).end()
-        .find('td:last').hide();
+        .find('input:radio').prop('disabled', true).end();
 
-    var stage1Percent = "${e://Field/stage1}";
+    var stage1Percent = "${e://Field/stage7}";
     if(stage1Percent != ''){
         setColumnToCheck(stage1Percent);
     }
 
     this.questionclick = function (event, element) {
-
         // -2 to neglect standard rating and comments
         var totalQs = this.getChoices().length - 2;
         var selectedAnswers = this.getSelectedAnswers();
@@ -67,16 +62,6 @@ Qualtrics.SurveyEngine.addOnReady(function () {
             var marksObtained = 0;
             var percent = 0;
 
-            // which column in standard rating is checked
-            var checkedId = jq('.ChoiceRow:nth-last-child(2)').find('input:checked').attr('id');
-            if(checkedId != undefined) {
-                var arr = checkedId.split('~');
-                var column = arr[arr.length - 1];
-                if (column != undefined) {
-                    selectedAnswers[column] -= 1;
-                }
-            }
-
             for (var i in selectedAnswers) {
                 if (i == 5) {
                     continue;
@@ -90,9 +75,6 @@ Qualtrics.SurveyEngine.addOnReady(function () {
             if(isNaN(percent)) {
                 percent = 0;
             }
-            console.log(selectedAnswers);
-            console.log(totalQs);
-            console.log(marksObtained);
             console.log(percent + "%");
 
             jq('.ChoiceRow:nth-last-child(2)')
@@ -108,11 +90,13 @@ Qualtrics.SurveyEngine.addOnReady(function () {
 
             //that.enableNextButton();
 
-            Qualtrics.SurveyEngine.setEmbeddedData('stage1', percent);
+            Qualtrics.SurveyEngine.setEmbeddedData('stage7', percent);
         }
     };
 
 });
 
 Qualtrics.SurveyEngine.addOnUnload(function () {
+    Qualtrics.SurveyEngine.setEmbeddedData('stage7Comment', jq('textarea').val());
+
 });
