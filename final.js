@@ -31,11 +31,11 @@ Qualtrics.SurveyEngine.addOnReady(function () {
             return finalCheckedColumn;
         }
 
-        if (percent > 83.33) {
+        if (percent >= 83.33) {
             finalCheckedColumn = 0;
-        } else if (percent > 50) {
+        } else if (percent >= 50) {
             finalCheckedColumn = 1;
-        } else if (percent > 16.67) {
+        } else if (percent >= 16.67) {
             finalCheckedColumn = 2;
         } else if (percent >= 0) {
             finalCheckedColumn = 3;

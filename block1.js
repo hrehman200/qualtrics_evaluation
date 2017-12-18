@@ -20,11 +20,11 @@ Qualtrics.SurveyEngine.addOnReady(function () {
 
     var setColumnToCheck = function(percent) {
         var finalCheckedColumn = -6; // -6 so that no column can be checked
-        if (percent > 83.33) {
+        if (percent >= 83.33) {
             finalCheckedColumn = 0;
-        } else if (percent > 50) {
+        } else if (percent >= 50) {
             finalCheckedColumn = 1;
-        } else if (percent > 16.67) {
+        } else if (percent >= 16.67) {
             finalCheckedColumn = 2;
         } else if (percent >= 0) {
             finalCheckedColumn = 3;
@@ -47,6 +47,11 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     }
 
     this.questionclick = function (event, element) {
+
+        // this event called twice, once for label, once of input
+        if(!jq(element).is('input')) {
+            return;
+        }
 
         // -2 to neglect standard rating and comments
         var totalQs = this.getChoices().length - 2;
