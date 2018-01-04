@@ -23,7 +23,6 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     var stage5 = "${e://Field/stage5}";
     var stage6 = "${e://Field/stage6}";
     var stage7 = "${e://Field/stage7}";
-    //var grandTotal = stage1+stage2+stage3+stage4+stage5+stage6+stage7 / 700 * 100;
 
     var getColumnToCheck = function (percent) {
         var finalCheckedColumn = -6;
@@ -82,6 +81,33 @@ Qualtrics.SurveyEngine.addOnReady(function () {
         .find('input').prop('checked', true).end()
         .find('label').addClass('q-checked');
 
+    /**
+     * Calculate weighted final percentage
+     * https://www.wikihow.com/Calculate-Weighted-Average
+     */
+    var stage1Weight = 0.15;
+    var stage2Weight = 0.10;
+    var stage3Weight = 0.10;
+    var stage4Weight = 0.15;
+    var stage5Weight = 0.20;
+    var stage6Weight = 0.10;
+    var stage7Weight = 0.20;
+
+    var finalWeightedPercentage = (stage1/100*stage1Weight)+
+        (stage2/100*stage2Weight)+
+        (stage3/100*stage3Weight)+
+        (stage4/100*stage4Weight)+
+        (stage5/100*stage5Weight)+
+        (stage6/100*stage6Weight)+
+        (stage7/100*stage7Weight);
+
+    finalWeightedPercentage = finalWeightedPercentage * 100;
+    var finalStageColumn = getColumnToCheck(finalWeightedPercentage);
+
+    jq('.ChoiceRow:eq(7) td:eq(' + finalStageColumn + ')')
+        .find('input').prop('checked', true).end()
+        .find('label').addClass('q-checked');
+
     jq('<tr style="background-color:#28ABE2; color:white;"><td style="text-align:left; padding:5px;">PART I. STANDARDS</td><td style= padding:5px;">HE</td><td style= padding:5px;>E</td><td style= padding:5px;>D</td><td style= padding:5px;>I</td></tr>').insertBefore('.ChoiceRow:eq(0)')
     jq('<tr style="background-color:#28ABE2; color:white;"><td style="text-align:left; padding:5px;">PART II. VALUES</td><td style= padding:5px;">HE</td><td style= padding:5px;>E</td><td style= padding:5px;>D</td><td style= padding:5px;>I</td></tr>').insertBefore('.ChoiceRow:eq(5)')
     jq('<tr style="background-color:#28ABE2; color:white;"><td style="text-align:left; padding:5px;">Part III. ANNUAL SUPERINTENDENT OBJECTIVES</td><td style= padding:5px;">HE</td><td style= padding:5px;>E</td><td style= padding:5px;>D</td><td style= padding:5px;>I</td></tr>').insertBefore('.ChoiceRow:eq(6)');
@@ -117,6 +143,9 @@ Qualtrics.SurveyEngine.addOnReady(function () {
     jq(commentHtmlTemplate).clone()
         .find('td:eq(0)').html("<b>Comment: </b> ${e://Field/stage7Comment}").end()
         .insertAfter('.ChoiceRow:eq(6)');
+
+    jq(commentHtmlTemplate).clone()
+        .insertBefore('.ChoiceRow:eq(7)');
 
     jq('#Buttons').prepend('<a href="javascript:window.print();" class="no-print" style="margin-right: 10px;">Print</a>');
 
